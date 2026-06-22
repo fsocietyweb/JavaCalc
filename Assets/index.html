@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaCalc Core</title>
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background-color: #1e1e24;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex; flex-direction: column;
+            height: 100vh; user-select: none;
+        }
+        #display {
+            background-color: #0f0f12; color: #00ff9d;
+            font-size: 2.5rem; text-align: right;
+            padding: 20px; border: none; outline: none; width: 100%; box-sizing: border-box;
+        }
+        .buttons {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 2px; background-color: #15151a; flex-grow: 1; padding: 5px;
+        }
+        button {
+            background-color: #2a2a35; color: white;
+            border: none; font-size: 1.5rem; cursor: pointer;
+        }
+        button:hover { background-color: #3a3a4a; }
+        button.operator { background-color: #ff9f0a; color: black; }
+        button.clear { background-color: #ff3b30; }
+    </style>
+</head>
+<body>
+
+    <input type="text" id="display" value="0" readonly>
+
+    <div class="buttons">
+        <button class="clear" onclick="clearDisplay()">C</button>
+        <button class="operator" onclick="press('/')">/</button>
+        <button class="operator" onclick="press('*')">*</button>
+        <button class="operator" onclick="press('-')">-</button>
+
+        <button onclick="press('7')">7</button>
+        <button onclick="press('8')">8</button>
+        <button onclick="press('9')">9</button>
+        <button class="operator" onclick="press('+')">+</button>
+
+        <button onclick="press('4')">4</button>
+        <button onclick="press('5')">5</button>
+        <button onclick="press('6')">6</button>
+        <button class="operator" style="grid-row: span 2; height: 100%;" onclick="calculate()">=</button>
+
+        <button onclick="press('1')">1</button>
+        <button onclick="press('2')">2</button>
+        <button onclick="press('3')">3</button>
+
+        <button onclick="press('0')" style="grid-column: span 2;">0</button>
+        <button onclick="press('.')">.</button>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentExpression = "";
+
+        function press(val) {
+            if (display.value === "0" && !isNaN(val)) {
+                currentExpression = val;
+            } else {
+                currentExpression += val;
+            }
+            display.value = currentExpression;
+        }
+
+        function clearDisplay() {
+            currentExpression = "";
+            display.value = "0";
+        }
+
+        function calculate() {
+            try {
+                let result = eval(currentExpression);
+                display.value = result;
+                currentExpression = result.toString();
+            } catch (error) {
+                display.value = "Error";
+                currentExpression = "";
+            }
+        }
+    </script>
+</body>
+</html>
